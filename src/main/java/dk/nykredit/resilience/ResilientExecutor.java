@@ -97,7 +97,7 @@ public class ResilientExecutor implements Executor {
      * Execute some code using back-off strategy.
      *
      * @param <T> the type of the result
-     * @param runnable the code to execute
+     * @param task the code to execute
      * @param onFailure the code to execute if maximum failures are exceeded
      * @return a future that will block until some result is returned or maximum retries has be exceeded. In the last case the exception thrown
      * by the task will be thrown when obtaining the result from the future
@@ -142,7 +142,9 @@ public class ResilientExecutor implements Executor {
     }
 
     /**
-     * Injecting <code>UserTransaction</code> using resource annotation doesn't seem to work
+     * Injecting <code>UserTransaction</code> using resource annotation doesn't seem to work, therefore it must be lookup using JNDI.
+	 *
+	 * @return the user transaction used when executing
      */
     protected UserTransaction getUserTransaction() {
         try {
