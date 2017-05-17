@@ -8,9 +8,9 @@ The resilient executor will automatically start a new transaction when executing
 
 # Status
 
-[![Build Status](https://travis-ci.org/Nykredit/bel.svg?branch=master)](https://travis-ci.org/Nykredit/bel)
-
 Module is considered beta quality.
+
+[![Build Status](https://travis-ci.org/Nykredit/bel.svg?branch=master)](https://travis-ci.org/Nykredit/bel) [![Coverage Status](https://coveralls.io/repos/github/Nykredit/bel/badge.svg?branch=master)](https://coveralls.io/github/Nykredit/bel?branch=master)
 
 # Usage
 
