@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Minimalistic Java EE resilience library</name>
+    <name>Back-off executor library</name>
     <groupId>dk.nykredit.resilience</groupId>
     <version>1.0.0-SNAPSHOT</version>
     <artifactId>bel</artifactId>
@@ -26,6 +26,12 @@
             <organizationUrl>http://www.nykredit.dk</organizationUrl>
         </developer>
     </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/Nykredit/bel.git</connection>
+        <developerConnection>scm:git:https://github.com/Nykredit/bel.git</developerConnection>
+        <url>https://github.com/Nykredit/bel</url>
+    </scm>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -92,6 +98,20 @@
                         <goals>
                             <goal>integration-test</goal>
                             <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
                         </goals>
                     </execution>
                 </executions>
