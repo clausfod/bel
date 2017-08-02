@@ -14,11 +14,22 @@ Module is considered beta quality.
 
 # Usage
 
+Add the following Maven dependency to your project:
+
+```xml
+<dependency>
+    <groupId>dk.nykredit.resilience</groupId>
+    <artifactId>bel</artifactId>
+    <version>0.9.1</version>
+</dependency>
+```
+
+
 The resilient executor implements the Executor interface and using the executor is thus similar to using Java EE ManagedScheduledExecutorService:
 
 ```java
 @Inject
-@ResilientExecutorConfig(strategy = PolynomialBackoffStrategy.class)
+@Resilient(strategy = PolynomialBackoffStrategy.class)
 @PolynomialBackoffStrategyConfig(delay = 1, maxDelay = 1800, retries = 100, timeUnit = TimeUnit.SECONDS)
 private ResilientExecutor executor;
 

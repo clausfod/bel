@@ -56,9 +56,9 @@ public class ResilientExecutorProducerTest {
 
     @Test
     public void testProduces() {
-        ResilientExecutorConfig conf = mock(ResilientExecutorConfig.class);
+        Resilient conf = mock(Resilient.class);
         when(conf.strategy()).thenAnswer((InvocationOnMock invocation) -> TestBackoffStrategy.class);
-        when(annotated.getAnnotation(ResilientExecutorConfig.class)).thenReturn(conf);
+        when(annotated.getAnnotation(Resilient.class)).thenReturn(conf);
         ResilientExecutor re = producer.createResilientExecutor(ip);
         assertNotNull("Using producere with annotation should create executor", re);
         assertEquals("Using producere with annotation should create executor with strategy", TestBackoffStrategy.class,

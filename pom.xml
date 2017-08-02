@@ -4,7 +4,7 @@
 
     <name>Back-off executor library</name>
     <groupId>dk.nykredit.resilience</groupId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>0.9.1-SNAPSHOT</version>
     <artifactId>bel</artifactId>
     <packaging>jar</packaging>
 

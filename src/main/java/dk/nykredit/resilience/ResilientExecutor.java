@@ -72,6 +72,7 @@ public class ResilientExecutor implements Executor {
      *
      * @param runnable the code to execute
      */
+    @Override
     public void execute(Runnable runnable) {
         execute(runnable, DEFAULT_ON_FAILURE);
     }

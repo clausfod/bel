@@ -5,11 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD, ElementType.TYPE})
-public @interface ResilientExecutorConfig {
+import javax.inject.Qualifier;
 
-    Class<? extends BackOffStrategy> strategy();
+@Qualifier
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE})
+public @interface Resilient {
+
+    Class<? extends BackOffStrategy> strategy() default PolynomialBackoffStrategy.class;
 
     String executor() default ResilientExecutor.DEFAULT_SCHEDULED_EXECUTOR_SERVICE;
 

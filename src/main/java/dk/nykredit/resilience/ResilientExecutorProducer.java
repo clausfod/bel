@@ -21,19 +21,20 @@ public class ResilientExecutorProducer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ResilientExecutorProducer.class);
 
     @Produces
+    @Resilient
     public ResilientExecutor createResilientExecutor(InjectionPoint ip) {
-        Optional<ResilientExecutorConfig> conf = Optional.ofNullable(ip.getAnnotated().getAnnotation(ResilientExecutorConfig.class));
+        Optional<Resilient> conf = Optional.ofNullable(ip.getAnnotated().getAnnotation(Resilient.class));
 
         BackOffStrategy strategy = conf.map(a -> createStrategy(a, ip))
                 .orElse(new PolynomialBackoffStrategy());
 
-        String executor = conf.map(ResilientExecutorConfig::executor)
+        String executor = conf.map(Resilient::executor)
                 .orElse(ResilientExecutor.DEFAULT_SCHEDULED_EXECUTOR_SERVICE);
 
         return new ResilientExecutor(strategy, getExecutor(executor));
     }
 
-    private static BackOffStrategy createStrategy(ResilientExecutorConfig a, InjectionPoint ip) {
+    private static BackOffStrategy createStrategy(Resilient a, InjectionPoint ip) {
         try {
             BackOffStrategy strategy = a.strategy().newInstance();
             strategy.configure(ip);
