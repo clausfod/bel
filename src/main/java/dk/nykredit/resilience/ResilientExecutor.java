@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
  * <pre>
  * {@code
  *  {@literal @}Inject
- *  {@literal @}ResilientExecutorConfig(strategy = PolynomialBackoffStrategy.class)
+ *  {@literal @}Resilient(strategy = PolynomialBackoffStrategy.class)
  *  {@literal @}PolynomialBackoffStrategyConfig(delay = 1, maxDelay = 1800, retries = 100, timeUnit = TimeUnit.SECONDS)
  *  private ResilientExecutor executor;
  *

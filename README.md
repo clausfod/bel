@@ -24,7 +24,6 @@ Add the following Maven dependency to your project:
 </dependency>
 ```
 
-
 The resilient executor implements the Executor interface and using the executor is thus similar to using Java EE ManagedScheduledExecutorService:
 
 ```java
