@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.ejb.ApplicationException;
 import javax.enterprise.concurrent.ManagedScheduledExecutorService;
 import javax.transaction.UserTransaction;
 
@@ -61,7 +62,7 @@ public class ResilientExecutorTest {
     }
 
     @Test
-    public void testExecuteRetry() throws Exception {
+    public void testExecuteRetryRuntimeException() throws Exception {
         AtomicInteger count = new AtomicInteger(0);
         executor.execute(() -> {
             if (count.get() == 0) {
@@ -72,6 +73,32 @@ public class ResilientExecutorTest {
         verify(ut, times(2)).begin();
         verify(ut).rollback();
         verify(ut).commit();
+    }
+
+    @Test
+    public void testExecuteRetryApplicationException() throws Exception {
+        AtomicInteger count = new AtomicInteger(0);
+        executor.execute(() -> {
+            if (count.get() == 0) {
+                count.addAndGet(1);
+                throw new TestApplicationException();
+            }
+        });
+        verify(ut, times(2)).begin();
+        verify(ut, times(2)).commit();
+    }
+
+    @Test
+    public void testExecuteRetryInheritedApplicationException() throws Exception {
+        AtomicInteger count = new AtomicInteger(0);
+        executor.execute(() -> {
+            if (count.get() == 0) {
+                count.addAndGet(1);
+                throw new TestInheritedApplicationException();
+            }
+        });
+        verify(ut, times(2)).begin();
+        verify(ut, times(2)).commit();
     }
 
     @Test
@@ -126,6 +153,32 @@ public class ResilientExecutorTest {
         protected UserTransaction getUserTransaction() {
             return ut;
         }
+    }
+
+    @ApplicationException(rollback = false)
+    public static class TestApplicationException extends RuntimeException {
+
+        private static final long serialVersionUID = -561561554937735049L;
+
+    }
+
+    @ApplicationException(rollback = false, inherited = true)
+    public static class TestSuperSuperApplicationException extends RuntimeException {
+
+        private static final long serialVersionUID = 5511558005180615995L;
+
+    }
+
+    public static class TestSuperApplicationException extends TestSuperSuperApplicationException {
+
+        private static final long serialVersionUID = 3064382691348889837L;
+
+    }
+
+    public static class TestInheritedApplicationException extends TestSuperApplicationException {
+
+        private static final long serialVersionUID = 5511558005180615995L;
+
     }
 
 }

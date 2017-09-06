@@ -6,6 +6,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
+import javax.ejb.ApplicationException;
 import javax.enterprise.concurrent.ManagedScheduledExecutorService;
 import javax.enterprise.context.Dependent;
 import javax.naming.InitialContext;
@@ -144,8 +145,8 @@ public class ResilientExecutor implements Executor {
 
     /**
      * Injecting <code>UserTransaction</code> using resource annotation doesn't seem to work, therefore it must be lookup using JNDI.
-	 *
-	 * @return the user transaction used when executing
+     *
+     * @return the user transaction used when executing
      */
     protected UserTransaction getUserTransaction() {
         try {
@@ -170,10 +171,35 @@ public class ResilientExecutor implements Executor {
             result = task.call();
             ut.commit();
         } catch (Exception e) {
-            rollback(ut);
+            if (rollback(e)) {
+                rollback(ut);
+            } else if (ut != null) {
+                ut.commit();
+            }
             throw e;
         }
         return result;
+    }
+
+    private boolean rollback(Exception e) {
+        ApplicationException annotation = getApplicationExceptionAnnotation(e);
+        return (annotation != null && annotation.rollback()) || (annotation == null && e instanceof RuntimeException);
+    }
+
+    private ApplicationException getApplicationExceptionAnnotation(Exception e) {
+        ApplicationException annotation = e.getClass().getAnnotation(ApplicationException.class);
+        return (annotation != null) ? annotation : findSuperApplicationExceptionAnnotation(e.getClass().getSuperclass());
+    }
+
+    private ApplicationException findSuperApplicationExceptionAnnotation(Class<?> clazz) {
+        ApplicationException annotation = null;
+        if (clazz != null) {
+            annotation = clazz.getAnnotation(ApplicationException.class);
+            if (annotation == null) {
+                annotation = findSuperApplicationExceptionAnnotation(clazz.getSuperclass());
+            }
+        }
+        return (annotation != null && annotation.inherited()) ? annotation : null;
     }
 
     private void executeOnFailureInTransaction(Exception failure, Consumer<Exception> onFailure) {
