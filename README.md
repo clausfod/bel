@@ -20,7 +20,7 @@ Add the following Maven dependency to your project:
 <dependency>
     <groupId>dk.nykredit.resilience</groupId>
     <artifactId>bel</artifactId>
-    <version>0.9.1</version>
+    <version>0.9.2</version>
 </dependency>
 ```
 
