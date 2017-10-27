@@ -6,12 +6,6 @@ This library implements an [Executor](http://docs.oracle.com/javase/7/docs/api/j
 
 The resilient executor will automatically start a new transaction when executing code using ManagedScheduledExecutorService, further simplifying creating resilient asynchronous code.
 
-# Status
-
-Module is considered beta quality.
-
-[![Build Status](https://travis-ci.org/Nykredit/bel.svg?branch=master)](https://travis-ci.org/Nykredit/bel) [![Coverage Status](https://coveralls.io/repos/github/Nykredit/bel/badge.svg?branch=master)](https://coveralls.io/github/Nykredit/bel?branch=master)
-
 # Usage
 
 Add the following Maven dependency to your project:
