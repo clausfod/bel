@@ -1,9 +1,2 @@
-/.idea
-/env.properties
-/target
-/*/target
-/*.iml
-/*/*.iml
-.classpath
-.project
-.settings
+target
+/.settings
